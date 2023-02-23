@@ -1,0 +1,41 @@
+import { useReducer } from 'react';
+
+function reducer(state, action) {
+  if (action.type === 'incremented_age') {
+    return {
+      ...state, 
+      age: state.age + 1,
+      username: state.username
+    };
+  }
+  if(action.type === 'update_username'){
+    console.log(state)
+     return {
+      ...state, 
+       age: state.age,
+      username: action.payload
+    };
+  }
+  throw Error('Unknown action.');
+}
+
+export default function Counter() {
+  const [state, dispatch] = useReducer(reducer, { 
+    age: 24, 
+    username: 'John Doe' 
+  });
+
+  return (
+    <>
+      <button onClick={() => {
+        dispatch({ type: 'incremented_age' })
+      }}>
+        Increment age
+      </button>
+      
+      <input onChange={(e)=> {dispatch({type: 'update_username', payload: e.target.value})}}></input>
+    
+      <p>Hello {state.username}! You are {state.age} years old.</p>
+    </>
+  );
+}
